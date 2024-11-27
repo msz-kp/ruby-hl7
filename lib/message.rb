@@ -162,12 +162,20 @@ class HL7::Message
 
   # provide a screen-readable version of the message
   def to_s
-    @segments.collect {|s| s if s.to_s.length.positive? }.join("\n")
+    @segments.collect do |s|
+      if (str = s.to_s).length > 0
+        str + "\n"
+      end
+    end.join
   end
 
   # provide a HL7 spec version of the message
   def to_hl7
-    @segments.collect {|s| s if s.to_s.length.positive? }.join(@delimiter.segment)
+    @segments.collect do |s|
+      if (str = s.to_s).length > 0
+        str + "\r"
+      end
+    end.join
   end
 
   # provide the HL7 spec version of the message wrapped in MLLP

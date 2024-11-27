@@ -48,8 +48,8 @@ end
 class HL7::MessageParser
   attr_reader :delimiter
 
-  def self.split_by_delimiter(element, delimiter)
-    element.split(delimiter, -1)
+  def self.split_by_delimiter(element, delimiter, split_param = -1)
+    element.split(delimiter, split_param)
   end
 
   def initialize(delimiter)
@@ -62,7 +62,7 @@ class HL7::MessageParser
     if /\x0b((:?.|\r|\n)+)\x1c\r/ =~ instr
       post_mllp = $1 # strip the mllp bytes
     end
-    HL7::MessageParser.split_by_delimiter(post_mllp, @delimiter.segment)
+    HL7::MessageParser.split_by_delimiter(post_mllp, @delimiter.segment, 0)
   end
 
   # Get the element delimiter from an MSH segment
